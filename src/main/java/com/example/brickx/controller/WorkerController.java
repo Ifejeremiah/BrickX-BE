@@ -16,13 +16,13 @@ public class WorkerController {
 
     private final WorkerService workerService;
 
-    @PostMapping("/workers")
-    public Worker saveWorker(@RequestBody Worker worker) {
-        return workerService.saveWorker(worker);
-    }
-
-    @GetMapping("/workers")
-    public List<Worker> fetchWorkerList() {
-        return workerService.fetchWorkerList();
-    }
+//    @PostMapping("/workers")
+//    public Worker saveWorker(@RequestBody Worker worker) {
+//        return workerService.saveWorker(worker);
+//    }
+//
+//    @GetMapping("/workers")
+//    public List<Worker> fetchWorkerList() {
+//        return workerService.fetchWorkerList();
+//    }
 }

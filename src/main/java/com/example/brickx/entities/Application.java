@@ -1,23 +1,31 @@
 package com.example.brickx.entities;
 
+import com.example.brickx.entities.commons.BaseEntity;
+import com.example.brickx.entities.enums.ApplicationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Builder
-public class Application {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long applicationId;
-    private String status;
+@Data
+public class Application extends BaseEntity {
+
+    private ApplicationStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id",referencedColumnName = "id")
+    private Project project;
+
+    @ManyToOne
+    @JoinColumn(name = "worker_id",referencedColumnName = "id")
+    private Worker worker;
+
 }

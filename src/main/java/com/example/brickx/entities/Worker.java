@@ -1,5 +1,8 @@
 package com.example.brickx.entities;
 
+import com.example.brickx.entities.commons.BaseEntity;
+import com.example.brickx.entities.enums.Gender;
+import com.example.brickx.entities.enums.JobType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -12,27 +15,21 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(
-        uniqueConstraints = @UniqueConstraint(
-                name = "email_id_unique",
-                columnNames = "email_address"
-        )
-)
-public class Worker {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long workerId;
+public class Worker extends BaseEntity {
     private String firstName;
     private String lastName;
     @Column(
             name = "email_address",
-            nullable = false
+            nullable = false,
+            unique = true
     )
     private String email;
     @Enumerated (value = EnumType.STRING)
@@ -40,23 +37,33 @@ public class Worker {
     @Column(
             nullable = false
     )
-    private String userType;
     private String bio;
     private String phoneNumber;
 
-//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-//    @JsonSerialize(using = LocalDateTimeSerializer.class)
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime dateCreated;
 
-    @ManyToOne(
-            cascade = CascadeType.ALL,
-            optional = false
-    )
+    private JobType jobType;
 
-    @JoinColumn(
-            name = "job_id",
-            referencedColumnName = "jobId"
-    )
-    private Job job;
+    private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id",referencedColumnName = "id")
+    private Project project;
+
+    @OneToMany(mappedBy = "worker")
+    private List<Application> application;
+
+    @OneToMany(mappedBy = "worker")
+    private List<Review> reviewList;
+
+    public Worker(Long id, String firstName, String lastName, String email, JobType jobType) {
+        super(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.jobType = jobType;
+    }
 }
