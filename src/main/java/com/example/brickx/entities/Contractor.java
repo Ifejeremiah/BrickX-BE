@@ -13,9 +13,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
-@Table(name = "Contractors")
 public class Contractor extends User {
 
     private String bio;

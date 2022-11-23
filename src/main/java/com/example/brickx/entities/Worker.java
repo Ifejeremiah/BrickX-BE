@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+
 public class Worker extends User {
 
     @Column(
@@ -36,6 +36,7 @@ public class Worker extends User {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateCreated;
 
+    @Enumerated(EnumType.STRING)
     private JobType jobType;
 
     @ManyToOne

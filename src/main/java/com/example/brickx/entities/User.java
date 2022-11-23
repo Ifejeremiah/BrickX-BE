@@ -4,20 +4,17 @@ import com.example.brickx.entities.commons.BaseEntity;
 import com.example.brickx.entities.enums.Gender;
 import com.example.brickx.entities.enums.Role;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Table(name = "users")
 public class User extends BaseEntity {
 
     private String firstName;
