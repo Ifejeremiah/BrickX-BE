@@ -23,17 +23,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Worker extends BaseEntity {
-    private String firstName;
-    private String lastName;
-    @Column(
-            name = "email_address",
-            nullable = false,
-            unique = true
-    )
-    private String email;
-    @Enumerated (value = EnumType.STRING)
-    private Gender gender;
+public class Worker extends User {
+
     @Column(
             nullable = false
     )
@@ -42,12 +33,10 @@ public class Worker extends BaseEntity {
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateCreated;
 
     private JobType jobType;
-
-    private String password;
 
     @ManyToOne
     @JoinColumn(name = "project_id",referencedColumnName = "id")
@@ -59,11 +48,5 @@ public class Worker extends BaseEntity {
     @OneToMany(mappedBy = "worker")
     private List<Review> reviewList;
 
-    public Worker(Long id, String firstName, String lastName, String email, JobType jobType) {
-        super(id);
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.jobType = jobType;
-    }
+
 }

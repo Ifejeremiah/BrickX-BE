@@ -1,6 +1,7 @@
 package com.example.brickx.entities;
 
 import com.example.brickx.entities.commons.BaseEntity;
+import com.example.brickx.entities.enums.JobType;
 import com.example.brickx.entities.enums.ProjectStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class Project extends BaseEntity {
 
     private String title;
     private String duration;
-    private Date startDate;
+    private LocalDateTime startDate;
     private Integer budget;
     private ProjectStatus projectStatus;
     private Date dateCreated;
@@ -33,4 +36,14 @@ public class Project extends BaseEntity {
 
     @OneToMany(mappedBy = "project")
     private List<Application> application;
+
+    @OneToMany(mappedBy = "project")
+    private List<Job> jobs;
+
+    public Project(String title, String duration, LocalDateTime startDate, Integer budget) {
+        this.title = title;
+        this.duration = duration;
+        this.startDate = startDate;
+        this.budget = budget;
+    }
 }

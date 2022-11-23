@@ -16,25 +16,13 @@ import java.util.List;
 @Builder
 @Data
 @Table(name = "Contractors")
-public class Contractor extends BaseEntity {
+public class Contractor extends User {
 
-    private String firstName;
-    private String lastName;
-    @Column(
-            name = "email_address",
-            nullable = false,
-            unique = true
-    )
-    private String email;
-    private String gender;
-    @Column(
-            nullable = false
-    )
-    private String userType;
-    private String password;
     private String bio;
     private String phoneNumber;
     private Date dateCreated;
     @OneToMany(mappedBy = "contractor")
     private List<Project> project;
+
+
 }
