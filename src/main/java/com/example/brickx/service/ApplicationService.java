@@ -9,7 +9,9 @@ public interface ApplicationService {
 
     List<Application> allApplicationsToProject(Long projectId);
 
-    void acceptApplicationToProject(ApplicationDto applicationDto);
+    Application viewApplication(Long projectId,Long applicationId,Long userId);
 
-    void declineApplicationToProject(ApplicationDto applicationDto);
+    void acceptApplicationToProject(Long projectId,Long applicationId,Long userId);
+
+    void declineApplicationToProject(Long projectId,Long applicationId,Long userId);
 }

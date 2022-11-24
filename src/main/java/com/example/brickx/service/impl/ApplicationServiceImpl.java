@@ -38,37 +38,52 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void acceptApplicationToProject(ApplicationDto applicationDto) {
-
-        Application application = new Application();
-
-        Project project = projectRepository.findById(Long.getLong(applicationDto.getProjectId())).orElseThrow(() -> new ResourceNotFoundException("project not found"));
-
-        Worker worker = workerRepository.findWorkerById(Long.getLong(applicationDto.getWorkerId())).orElseThrow(() -> new ResourceNotFoundException("worker not found"));
-
-        project.getWorker().add(worker);
-
-        projectRepository.save(project);
-
-        application.setProject(project);
-        application.setWorker(worker);
-        application.setStatus(ApplicationStatus.Accepted);
-
-        applicationRepository.save(application);
+    public Application viewApplication(Long projectId, Long applicationId, Long userId) {
+        return applicationRepository.findApplicationByIdAndProject_IdAndWorker_Id(applicationId,projectId,userId);
     }
 
     @Override
-    public void declineApplicationToProject(ApplicationDto applicationDto) {
-
-        Application application = new Application();
-
-        Project project = projectRepository.findById(Long.getLong(applicationDto.getProjectId())).orElseThrow(() -> new ResourceNotFoundException("project not found"));
-
-        Worker worker = workerRepository.findWorkerById(Long.getLong(applicationDto.getWorkerId())).orElseThrow(() -> new ResourceNotFoundException("worker not found"));
-
-        application.setProject(project);
-        application.setWorker(worker);
-        application.setStatus(ApplicationStatus.Rejected);
-        applicationRepository.save(application);
+    public void acceptApplicationToProject(Long projectId, Long applicationId, Long userId) {
+//        Project project = pro
     }
+
+    @Override
+    public void declineApplicationToProject(Long projectId, Long applicationId, Long userId) {
+
+    }
+
+//    @Override
+//    public void acceptApplicationToProject(ApplicationDto applicationDto) {
+//
+//        Application application = new Application();
+//
+//        Project project = projectRepository.findById(Long.getLong(applicationDto.getProjectId())).orElseThrow(() -> new ResourceNotFoundException("project not found"));
+//
+//        Worker worker = workerRepository.findWorkerById(Long.getLong(applicationDto.getWorkerId())).orElseThrow(() -> new ResourceNotFoundException("worker not found"));
+//
+//        project.getWorker().add(worker);
+//
+//        projectRepository.save(project);
+//
+//        application.setProject(project);
+//        application.setWorker(worker);
+//        application.setStatus(ApplicationStatus.Accepted);
+//
+//        applicationRepository.save(application);
+//    }
+//
+//    @Override
+//    public void declineApplicationToProject(ApplicationDto applicationDto) {
+//
+//        Application application = new Application();
+//
+//        Project project = projectRepository.findById(Long.getLong(applicationDto.getProjectId())).orElseThrow(() -> new ResourceNotFoundException("project not found"));
+//
+//        Worker worker = workerRepository.findWorkerById(Long.getLong(applicationDto.getWorkerId())).orElseThrow(() -> new ResourceNotFoundException("worker not found"));
+//
+//        application.setProject(project);
+//        application.setWorker(worker);
+//        application.setStatus(ApplicationStatus.Rejected);
+//        applicationRepository.save(application);
+//    }
 }

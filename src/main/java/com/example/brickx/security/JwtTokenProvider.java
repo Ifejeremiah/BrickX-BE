@@ -1,8 +1,11 @@
 package com.example.brickx.security;
 
 
+import com.example.brickx.entities.User;
 import com.example.brickx.exceptions.BrickxAPIException;
+import com.example.brickx.repository.UserRepository;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -12,6 +15,8 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
+    @Autowired
+    private UserRepository userRepository;
 
     @Value("${app.jwt-secret}")
     private String jwtSecret;
@@ -19,22 +24,25 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
 
     // generate token
-    public String generateToken(Authentication authentication){
+    public String generateToken(Authentication authentication) {
         String username = authentication.getName();
+        User user = userRepository.findUserByEmail(username);
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + jwtExpirationInMs);
 
         String token = Jwts.builder()
-                .setSubject(username)
                 .setIssuedAt(new Date())
+                .claim("role", user.getRole().toString())
+                .claim("user_id", user.getId().toString())
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+//                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
         return token;
     }
 
     // get username from the token
-    public String getUsernameFromJWT(String token){
+    public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
@@ -43,11 +51,11 @@ public class JwtTokenProvider {
     }
 
     // validate JWT token
-    public boolean validateToken(String token){
-        try{
+    public boolean validateToken(String token) {
+        try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
-        }catch (SignatureException ex){
+        } catch (SignatureException ex) {
             throw new BrickxAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT signature");
         } catch (MalformedJwtException ex) {
             throw new BrickxAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT token");
