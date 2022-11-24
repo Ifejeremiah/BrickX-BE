@@ -9,22 +9,27 @@ import com.example.brickx.entities.enums.JobType;
 import com.example.brickx.entities.enums.Role;
 import com.example.brickx.exceptions.BrickxAPIException;
 import com.example.brickx.repository.UserRepository;
+import com.example.brickx.repository.WorkerRepository;
 import com.example.brickx.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final WorkerRepository workerRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, WorkerRepository workerRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.workerRepository = workerRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
     }
@@ -56,5 +61,15 @@ public class UserServiceImpl implements UserService {
             user.setFirstName(updateDto.getFirstName());
             user.setLastName(updateDto.getLastName());
             user.setGender(updateDto.getGender());
+    }
+
+    @Override
+    public User getUser(Long id) {
+        return userRepository.findUserById(id);
+    }
+
+    @Override
+    public List<Worker> allWorkersForProject(Long projectId) {
+        return workerRepository.findWorkersByProject_Id(projectId);
     }
 }

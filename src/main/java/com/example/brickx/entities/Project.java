@@ -35,9 +35,6 @@ public class Project extends BaseEntity {
     private List<Worker> worker;
 
     @OneToMany(mappedBy = "project")
-    private List<Application> application;
-
-    @OneToMany(mappedBy = "project")
     private List<Job> jobs;
 
     public Project(String title, String duration, LocalDateTime startDate, Integer budget) {

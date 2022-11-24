@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface ContractorRepository extends JpaRepository<Contractor,Long> {
 
     boolean existsContractorByEmail(String email);
+
+    Contractor findContractorById(Long id);
 }

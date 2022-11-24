@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +17,9 @@ public class Job extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private JobType jobType;
+
+    @OneToMany(mappedBy = "job")
+    private List<Application> application;
 
     @ManyToOne
     @JoinColumn(name = "project_id")

@@ -2,6 +2,7 @@ package com.example.brickx.service;
 
 import com.example.brickx.dtos.ProjectDto;
 import com.example.brickx.entities.Project;
+import com.example.brickx.entities.Worker;
 import com.example.brickx.entities.enums.JobType;
 import com.example.brickx.entities.enums.ProjectStatus;
 
@@ -9,13 +10,14 @@ import java.util.List;
 
 public interface ProjectService {
 
-    void createProject(ProjectDto projectDto);
+    void createProject(Long contractorId,ProjectDto projectDto);
 
     Project viewProject(Long id);
 
-    List<Project> projectsByJobType(JobType jobType);
+    List<Project> projectsByContractorId(Long contractorId);
 
-    List<Project> projectsByWorkerId(Long id);
+
+    List<Project> projectsByWorkerId(Long workerId);
 
     void updateProjectStatus(Long projectId, ProjectStatus projectStatus);
 }

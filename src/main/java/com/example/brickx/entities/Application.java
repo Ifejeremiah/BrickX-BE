@@ -22,7 +22,7 @@ public class Application extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "project_id",referencedColumnName = "id")
-    private Project project;
+    private Job job;
 
     @ManyToOne
     @JoinColumn(name = "worker_id",referencedColumnName = "id")

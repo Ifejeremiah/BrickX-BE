@@ -39,10 +39,4 @@ public class ProjectDto {
         this.jobs = jobs;
     }
 
-    public ProjectDto(String title, String duration, LocalDateTime startDate, int budget) {
-        this.title = title;
-        this.duration = duration;
-        this.startDate = startDate;
-        this.budget = budget;
-    }
 }

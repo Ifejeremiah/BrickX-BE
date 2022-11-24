@@ -15,6 +15,6 @@ import javax.persistence.ManyToOne;
 public class ApplicationDto {
     private int id;
     private String status;
-    private String projectId;
+    private String jobId;
     private String workerId;
 }
