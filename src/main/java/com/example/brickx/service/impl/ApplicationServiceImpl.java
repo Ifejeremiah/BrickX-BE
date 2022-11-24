@@ -23,19 +23,13 @@ import java.util.List;
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationRepository applicationRepository;
-    private final ProjectRepository projectRepository;
-
     private final JobRepository jobRepository;
-    private final ModelMapper modelMapper;
-
     private final ProjectService projectService;
     private final WorkerRepository workerRepository;
 
-    public ApplicationServiceImpl(ApplicationRepository applicationRepository, ProjectRepository projectRepository, JobRepository jobRepository, ModelMapper modelMapper, ProjectService projectService, WorkerRepository workerRepository) {
+    public ApplicationServiceImpl(ApplicationRepository applicationRepository, JobRepository jobRepository, ProjectService projectService, WorkerRepository workerRepository) {
         this.applicationRepository = applicationRepository;
-        this.projectRepository = projectRepository;
         this.jobRepository = jobRepository;
-        this.modelMapper = modelMapper;
         this.projectService = projectService;
         this.workerRepository = workerRepository;
     }

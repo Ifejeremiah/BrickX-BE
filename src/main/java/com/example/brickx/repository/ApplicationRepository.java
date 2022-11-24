@@ -3,12 +3,13 @@ package com.example.brickx.repository;
 import com.example.brickx.entities.Application;
 import com.example.brickx.entities.enums.JobType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface ApplicationRepository extends JpaRepository<Application,Long> {
 
-    List<Application> findApplicationsByProject_Id(Long id);
+//    List<Application> findApplicationsByProject_Id(Long id);
 
     Application findApplicationById(Long id);
     List<Application> findApplicationsByWorker_Id(Long worker_id);

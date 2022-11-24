@@ -28,14 +28,7 @@ public class ApplicationController {
         this.userRepository = userRepository;
     }
 
-    @RolesAllowed("Contractor")
-    @GetMapping("/projects/{pid}/applications")
-    public ResponseEntity<List<Application>> getAllApplicationsForProject(@PathVariable(name = "pid")Long idp){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        String email = userDetails.getUsername();
-        Contractor contractor = (Contractor) userRepository.findUserByEmail(email);
-        return ResponseEntity.ok(applicationService.allApplicationsForProject(contractor.getId(), idp));
-    }
+
 
     @RolesAllowed("Worker")
     @GetMapping("/requests")

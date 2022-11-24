@@ -36,19 +36,19 @@ public class ProjectController {
     }
 
 
-
     @RolesAllowed("Contractor")
     @GetMapping("/projects")
-    public ResponseEntity<List<Project>> getAllProjects(){
+    public ResponseEntity<List<Project>> getAllProjects() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String email = userDetails.getUsername();
         Contractor contractor = (Contractor) userRepository.findUserByEmail(email);
         return ResponseEntity.ok(projectService.projectsByContractorId(contractor.getId()));
     }
 
+
     @RolesAllowed("Contractor")
     @GetMapping("/projects/{pid}/applications")
-    public ResponseEntity<List<Application>> getAllApplicationsForProject(@PathVariable(name = "pid")Long idp){
+    public ResponseEntity<List<Application>> getAllApplicationsForProject(@PathVariable(name = "pid") Long idp) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String email = userDetails.getUsername();
         Contractor contractor = (Contractor) userRepository.findUserByEmail(email);
@@ -57,7 +57,7 @@ public class ProjectController {
 
     @RolesAllowed("Contractor")
     @GetMapping("/projects/{pid}/workers")
-    public ResponseEntity<List<Worker>> getAllWorkersForProject(){
+    public ResponseEntity<List<Worker>> getAllWorkersForProject() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String email = userDetails.getUsername();
         Contractor contractor = (Contractor) userRepository.findUserByEmail(email);
