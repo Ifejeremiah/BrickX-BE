@@ -72,4 +72,9 @@ public class UserServiceImpl implements UserService {
     public List<Worker> allWorkersForProject(Long projectId) {
         return workerRepository.findWorkersByProject_Id(projectId);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
 }

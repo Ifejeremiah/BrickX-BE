@@ -6,6 +6,7 @@ import com.example.brickx.entities.Worker;
 import com.example.brickx.repository.UserRepository;
 import com.example.brickx.service.ApplicationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +33,8 @@ public class ApplicationController {
 
     @RolesAllowed("Worker")
     @GetMapping("/requests")
-    public ResponseEntity<List<Application>> allRequestByWorkerId(){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        String email = userDetails.getUsername();
-        Worker worker = (Worker) userRepository.findUserByEmail(email);
+    public ResponseEntity<List<Application>> allRequestByWorkerId(@AuthenticationPrincipal UserDetails currentUser){
+        Worker worker = (Worker) userRepository.findUserByEmail(currentUser.getUsername());
         return ResponseEntity.ok(applicationService.allApplicationsByWorker(worker.getId()));
     }
 

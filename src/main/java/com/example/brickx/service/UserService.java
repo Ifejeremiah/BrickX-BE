@@ -16,4 +16,6 @@ public interface UserService {
     User getUser(Long id);
 
     List<Worker> allWorkersForProject(Long projectId);
+
+    User findByEmail(String email);
 }

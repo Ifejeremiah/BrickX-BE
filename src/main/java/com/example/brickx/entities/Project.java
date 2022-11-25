@@ -37,10 +37,14 @@ public class Project extends BaseEntity {
     @OneToMany(mappedBy = "project")
     private List<Job> jobs;
 
-    public Project(String title, String duration, LocalDateTime startDate, Integer budget) {
+    public Project(String title, String duration, LocalDateTime startDate, Integer budget, ProjectStatus projectStatus, Date dateCreated, Contractor contractor, List<Job> jobs) {
         this.title = title;
         this.duration = duration;
         this.startDate = startDate;
         this.budget = budget;
+        this.projectStatus = projectStatus;
+        this.dateCreated = dateCreated;
+        this.contractor = contractor;
+        this.jobs = jobs;
     }
 }

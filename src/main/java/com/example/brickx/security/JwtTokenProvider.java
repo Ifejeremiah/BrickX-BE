@@ -30,15 +30,16 @@ public class JwtTokenProvider {
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + jwtExpirationInMs);
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setIssuedAt(new Date())
+                .setSubject(username)
+                .claim("email", user.getEmail())
                 .claim("role", user.getRole().toString())
                 .claim("user_id", user.getId().toString())
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
 //                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
-        return token;
     }
 
     // get username from the token

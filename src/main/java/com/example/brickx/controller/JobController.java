@@ -1,11 +1,13 @@
 package com.example.brickx.controller;
 
 import com.example.brickx.entities.Job;
+import com.example.brickx.entities.User;
 import com.example.brickx.entities.Worker;
 import com.example.brickx.repository.UserRepository;
 import com.example.brickx.service.ApplicationService;
 import com.example.brickx.service.JobService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -29,19 +31,17 @@ public class JobController {
 
     @RolesAllowed("Worker")
     @GetMapping("/jobs")
-    public ResponseEntity<List<Job>> allJobsByJobType(){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        String email = userDetails.getUsername();
-        Worker worker = (Worker) userRepository.findUserByEmail(email);
+    public ResponseEntity<List<Job>> allJobsByJobType(@AuthenticationPrincipal UserDetails currentUser){
+        Worker worker = (Worker) userRepository.findUserByEmail(currentUser.getUsername());
         return ResponseEntity.ok(jobService.allJobsByJobType(worker.getJobType()));
     }
 
 
     @RolesAllowed("Worker")
     @PostMapping("/jobs/{jid}")
-    public ResponseEntity<String> applyForJob(@PathVariable(name = "wid") Long idw, @PathVariable(name = "jid") Long idj){
-
-        applicationService.createApplication(idw,idj);
+    public ResponseEntity<String> applyForJob(@AuthenticationPrincipal UserDetails currentUser, @PathVariable(name = "jid") Long idj){
+        Worker worker = (Worker)userRepository.findUserByEmail(currentUser.getUsername());
+        applicationService.createApplication(worker.getId(), idj);
         return ResponseEntity.ok("applied");
     }
 

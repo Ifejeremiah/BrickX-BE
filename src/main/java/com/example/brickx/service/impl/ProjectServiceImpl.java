@@ -11,6 +11,8 @@ import com.example.brickx.service.ProjectService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,9 +36,15 @@ public class ProjectServiceImpl implements ProjectService {
         if(projectDoesExist){
             throw new ResourceNotFoundException("project does exist");
         } else {
-            Project project = modelMapper.map(projectDto, Project.class);
+            Project project = new Project();
+            project.setTitle(projectDto.getTitle());
+            project.setDuration(projectDto.getDuration());
+            project.setBudget(projectDto.getBudget());
+            project.setDateCreated(new Date());
+            project.setStartDate(LocalDateTime.now());
             project.setContractor(contractorRepository.findContractorById(contractorId));
             project.setProjectStatus(ProjectStatus.Open);
+            System.out.println(projectDto.getValue());
             projectRepository.save(project);
         }
     }

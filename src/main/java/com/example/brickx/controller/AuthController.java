@@ -3,6 +3,7 @@ package com.example.brickx.controller;
 import com.example.brickx.dtos.JWTAuthResponse;
 import com.example.brickx.dtos.LoginDto;
 import com.example.brickx.dtos.SignUpDto;
+import com.example.brickx.entities.User;
 import com.example.brickx.security.JwtTokenProvider;
 import com.example.brickx.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,9 @@ public class AuthController {
         // get token form tokenProvider
         String token = tokenProvider.generateToken(authentication);
 
-        return ResponseEntity.ok(new JWTAuthResponse(token));
+        User user = userService.findByEmail(loginDto.getEmail());
+
+        return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
     }
 
 
