@@ -28,20 +28,36 @@ public class ProjectDto {
     private int id;
     private String title;
     private String duration;
-//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-//    @JsonSerialize(using = LocalDateTimeSerializer.class)
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private String startDate;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startDate;
     private int budget;
 
-    @JsonDeserialize(using = StringListDeserializer.class)
-    private List<String> value;
+    private String status;
+  @JsonDeserialize(using = StringListDeserializer.class)
+  private List<String> job;
 
-    public ProjectDto(String title, String duration, String startDate, int budget, List<String> value) {
+    public ProjectDto(String title, String duration, LocalDateTime startDate, int budget, List<String> job) {
         this.title = title;
         this.duration = duration;
         this.startDate = startDate;
         this.budget = budget;
-        this.value = value;
+        this.job = job;
     }
+
+//
+
+    public ProjectDto(String status) {
+        this.status = status;
+    }
+
+
+//    public ProjectDto(String title, String duration, String startDate, int budget, String value) {
+//        this.title = title;
+//        this.duration = duration;
+//        this.startDate = startDate;
+//        this.budget = budget;
+//        this.value = value;
+//    }
 }

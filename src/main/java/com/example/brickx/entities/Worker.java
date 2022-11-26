@@ -3,6 +3,7 @@ package com.example.brickx.entities;
 import com.example.brickx.entities.commons.BaseEntity;
 import com.example.brickx.entities.enums.Gender;
 import com.example.brickx.entities.enums.JobType;
+import com.example.brickx.entities.enums.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -22,22 +23,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@PrimaryKeyJoinColumn(name = "Worker")
 public class Worker extends User {
 
-    @Column(
-            nullable = false
-    )
-    private String bio;
-    private String phoneNumber;
-
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dateCreated;
-
-    @Enumerated(EnumType.STRING)
-    private JobType jobType;
+    private String jobName;
 
     @ManyToOne
     @JoinColumn(name = "project_id",referencedColumnName = "id")
@@ -49,5 +38,8 @@ public class Worker extends User {
     @OneToMany(mappedBy = "worker")
     private List<Review> reviewList;
 
-
+    public Worker(String firstName, String lastName, String email, String password, Gender gender, Role role, String bio, String phoneNumber, LocalDateTime dateCreated, String jobName) {
+        super(firstName, lastName, email, password, gender, role, bio, phoneNumber, dateCreated);
+        this.jobName = jobName;
+    }
 }

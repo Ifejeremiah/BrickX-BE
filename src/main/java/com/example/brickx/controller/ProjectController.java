@@ -10,6 +10,7 @@ import com.example.brickx.service.ApplicationService;
 import com.example.brickx.service.ProjectService;
 import com.example.brickx.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.Authentication;
@@ -54,6 +55,20 @@ public class ProjectController {
     public ResponseEntity<List<Project>> getAllProjects(@AuthenticationPrincipal UserDetails currentUser) {
         Contractor contractor = (Contractor) userRepository.findUserByEmail(currentUser.getUsername());
         return ResponseEntity.ok(projectService.projectsByContractorId(contractor.getId()));
+    }
+
+    @RolesAllowed("Contractor")
+    @PatchMapping("/projects/{pid}")
+    public ResponseEntity<?> updateProject(@RequestBody ProjectDto projectDto,@PathVariable(name = "pid")Long id) {
+        projectService.updateProject(id,projectDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RolesAllowed("Contractor")
+    @PostMapping("/projects/{pid}")
+    public ResponseEntity<?> updateProjectStatus(@PathVariable(name = "pid")Long id, @RequestBody ProjectDto projectDto) {
+        projectService.updateProjectStatus(id, projectDto.getStatus());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

@@ -40,15 +40,15 @@ public class UserServiceImpl implements UserService {
             throw new BrickxAPIException(HttpStatus.BAD_REQUEST,"email does exist");
         } else {
             if(signUpDto.getUserType().equals(String.valueOf(Role.Contractor))){
-                Contractor contractor = modelMapper.map(signUpDto, Contractor.class);
+                User contractor = modelMapper.map(signUpDto, Contractor.class);
                 contractor.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
                 contractor.setRole(Role.Contractor);
                 userRepository.save(contractor);
             }
             if(signUpDto.getUserType().equals(String.valueOf(Role.Worker))){
-                Worker worker = modelMapper.map(signUpDto, Worker.class);
+                User worker = modelMapper.map(signUpDto, Worker.class);
                 worker.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-                worker.setJobType(JobType.valueOf(signUpDto.getJobType()));
+                ((Worker) worker).setJobName(signUpDto.getJobType());
                 worker.setRole(Role.Worker);
                 userRepository.save(worker);
             }

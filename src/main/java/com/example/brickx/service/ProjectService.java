@@ -17,7 +17,9 @@ public interface ProjectService {
     List<Project> projectsByContractorId(Long contractorId);
 
 
-    List<Project> projectsByWorkerId(Long workerId);
+  //  List<Project> projectsByWorkerId(Long workerId);
 
-    void updateProjectStatus(Long projectId, ProjectStatus projectStatus);
+    void updateProjectStatus(Long projectId, String projectStatus);
+
+    void updateProject(Long projectId, ProjectDto projectDto);
 }

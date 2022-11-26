@@ -17,8 +17,9 @@ public class JobServiceImpl implements JobService {
         this.jobRepository = jobRepository;
     }
 
+
     @Override
-    public List<Job> allJobsByJobType(JobType jobType) {
-        return jobRepository.findJobsByJobType(jobType);
+    public List<Job> allJobsByJobName(String name) {
+        return jobRepository.findJobsByName(name);
     }
 }

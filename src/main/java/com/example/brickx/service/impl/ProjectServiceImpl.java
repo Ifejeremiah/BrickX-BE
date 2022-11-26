@@ -1,6 +1,7 @@
 package com.example.brickx.service.impl;
 
 import com.example.brickx.dtos.ProjectDto;
+import com.example.brickx.entities.Job;
 import com.example.brickx.entities.Project;
 import com.example.brickx.entities.enums.JobType;
 import com.example.brickx.entities.enums.ProjectStatus;
@@ -12,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -41,11 +43,13 @@ public class ProjectServiceImpl implements ProjectService {
             project.setDuration(projectDto.getDuration());
             project.setBudget(projectDto.getBudget());
             project.setDateCreated(new Date());
-            project.setStartDate(LocalDateTime.now());
+            project.setStartDate(projectDto.getStartDate());
             project.setContractor(contractorRepository.findContractorById(contractorId));
             project.setProjectStatus(ProjectStatus.Open);
-            System.out.println(projectDto.getValue());
-            projectRepository.save(project);
+            Project savedProject = projectRepository.save(project);
+            List<Job> jobs = projectDto.getJob().stream().map(jobName -> new Job(jobName,new ArrayList<>(),savedProject)).toList();
+            savedProject.setJobs(jobs);
+            projectRepository.save(savedProject);
         }
     }
 
@@ -65,15 +69,24 @@ public class ProjectServiceImpl implements ProjectService {
 //        return projects.stream().filter(project -> project.getJobs().stream().filter(job -> job.getJobType() == jobType).isParallel()).toList();
 //    }
 
+//    @Override
+//    public List<Project> projectsByWorkerId(Long id) {
+//        return projectRepository.findAll().stream().filter(project -> project.getWorker().stream().filter(worker -> Objects.equals(worker.getId(), id)).isParallel()).toList();
+//    }
+
     @Override
-    public List<Project> projectsByWorkerId(Long id) {
-        return projectRepository.findAll().stream().filter(project -> project.getWorker().stream().filter(worker -> Objects.equals(worker.getId(), id)).isParallel()).toList();
+    public void updateProjectStatus(Long id,String projectStatus) {
+        Project project = viewProject(id);
+        project.setProjectStatus(ProjectStatus.valueOf(projectStatus));
+        projectRepository.save(project);
     }
 
     @Override
-    public void updateProjectStatus(Long id,ProjectStatus projectStatus) {
-        Project project = viewProject(id);
-        project.setProjectStatus(projectStatus);
+    public void updateProject(Long projectId, ProjectDto projectDto) {
+        Project project = viewProject(projectId);
+        project.setBudget(projectDto.getBudget());
+        project.setTitle(projectDto.getTitle());
+        project.setDuration(projectDto.getDuration());
         projectRepository.save(project);
     }
 }

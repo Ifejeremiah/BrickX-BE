@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface JobService {
 
-    List<Job> allJobsByJobType(JobType jobType);
+    List<Job> allJobsByJobName(String name);
 }

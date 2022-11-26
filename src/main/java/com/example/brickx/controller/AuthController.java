@@ -3,7 +3,9 @@ package com.example.brickx.controller;
 import com.example.brickx.dtos.JWTAuthResponse;
 import com.example.brickx.dtos.LoginDto;
 import com.example.brickx.dtos.SignUpDto;
+import com.example.brickx.entities.Contractor;
 import com.example.brickx.entities.User;
+import com.example.brickx.entities.Worker;
 import com.example.brickx.security.JwtTokenProvider;
 import com.example.brickx.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -38,13 +40,20 @@ public class AuthController {
                 loginDto.getEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         // get token form tokenProvider
         String token = tokenProvider.generateToken(authentication);
 
-        User user = userService.findByEmail(loginDto.getEmail());
+        boolean worker = authentication.getAuthorities().toString().equals("Worker");
 
-        return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
+        boolean Contractor = authentication.getAuthorities().toString().equals("Contractor");
+
+        if(worker){
+            Worker user = (Worker) userService.findByEmail(loginDto.getEmail());
+            return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
+        }else {
+            Contractor user = (com.example.brickx.entities.Contractor) userService.findByEmail(loginDto.getEmail());
+            return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
+        }
     }
 
 
