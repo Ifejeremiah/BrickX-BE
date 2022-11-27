@@ -2,6 +2,7 @@ package com.example.brickx.entities;
 
 import com.example.brickx.entities.enums.Gender;
 import com.example.brickx.entities.enums.Role;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -15,8 +16,6 @@ import java.util.Objects;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @ToString
 public class Contractor extends User {
 
@@ -26,6 +25,15 @@ public class Contractor extends User {
 
     public Contractor(String firstName, String lastName, String email, String password, Gender gender, Role role, String bio, String phoneNumber) {
         super(firstName, lastName, email, password, gender, role, bio, phoneNumber);
+    }
+
+    @JsonManagedReference
+    public List<Project> getProject() {
+        return project;
+    }
+
+    public void setProject(List<Project> project) {
+        this.project = project;
     }
 
     @Override

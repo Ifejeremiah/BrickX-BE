@@ -1,6 +1,7 @@
 package com.example.brickx.entities;
 
 import com.example.brickx.entities.commons.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -13,8 +14,6 @@ import java.util.Objects;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @ToString
 public class Review extends BaseEntity {
 
@@ -29,6 +28,49 @@ public class Review extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "worker_id",referencedColumnName = "id")
     private Worker worker;
+
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    @JsonBackReference
+    public Contractor getContractor() {
+        return contractor;
+    }
+
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
+    }
+
+    @JsonBackReference
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -22,13 +22,13 @@ public class UserController {
     }
 
 
-    @PatchMapping("/{uid}")
+    @PatchMapping("/my-profile")
     public ResponseEntity<?> updateProfile(@AuthenticationPrincipal UserDetails currentUser, @RequestBody UpdateDto updateDto){
         userService.updateUserProfile(getCurrentUserId(currentUser),updateDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{uid}")
+    @GetMapping("/my-profile")
     public ResponseEntity<User> viewProfile(@AuthenticationPrincipal UserDetails currentUser){
         return new ResponseEntity<>(userService.getUser(getCurrentUserId(currentUser)),HttpStatus.OK);
     }

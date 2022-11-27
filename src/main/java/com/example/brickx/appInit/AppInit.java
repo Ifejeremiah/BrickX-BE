@@ -53,9 +53,9 @@ public class AppInit implements CommandLineRunner {
         User contractor3 = new Contractor("Neha","Weaver","Nehdeweaver@gmail.com",passwordEncoder.encode("testuser"), Gender.female, Role.Contractor,"Great at turning bricks to structures","08034812586");
         User contractor4 = new Contractor("Jane","Aiko","janethebeaver@gmail.com",passwordEncoder.encode("testuser"), Gender.female, Role.Contractor,"I will turn your dream house to reality","08073758792");
         User contractor5 = new Contractor("William","Ogundegbe","Williamogundegbe@gmail.com",passwordEncoder.encode("testuser"), Gender.male, Role.Contractor,"I am good at churning out amazing buildings","09054392140");
+        User contractor6 = new Contractor("Ife","Jeremiah","0001@gmail.com", passwordEncoder.encode("123456789"), Gender.male, Role.Contractor,"a great contractor","08023456798");
 
-        userRepository.saveAll(List.of(contractor,contractor2,contractor3,contractor4,contractor5,contractor1));
-
+        userRepository.saveAll(List.of(contractor,contractor2,contractor3,contractor4,contractor5,contractor1, contractor6));
 
         User worker = new Worker("Tosin","martin","tosinmartin@gmail.com",passwordEncoder.encode("testuser"),Gender.male,Role.Worker,"I am good with my hands","0804263325","INSPECTOR");
 

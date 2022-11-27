@@ -35,7 +35,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto){
+    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getEmail(), loginDto.getPassword()));
 
@@ -47,10 +47,10 @@ public class AuthController {
 
         boolean Contractor = authentication.getAuthorities().toString().equals("Contractor");
 
-        if(worker){
+        if (worker) {
             Worker user = (Worker) userService.findByEmail(loginDto.getEmail());
             return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
-        }else {
+        } else {
             Contractor user = (com.example.brickx.entities.Contractor) userService.findByEmail(loginDto.getEmail());
             return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
         }
@@ -58,8 +58,8 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto){
-            userService.signUp(signUpDto);
+    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
+        userService.signUp(signUpDto);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 
     }

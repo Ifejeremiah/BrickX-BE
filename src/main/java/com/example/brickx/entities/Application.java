@@ -2,6 +2,7 @@ package com.example.brickx.entities;
 
 import com.example.brickx.entities.commons.BaseEntity;
 import com.example.brickx.entities.enums.ApplicationStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -14,8 +15,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@Setter
 @ToString
 
 public class Application extends BaseEntity {
@@ -29,6 +28,32 @@ public class Application extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "worker_id",referencedColumnName = "id")
     private Worker worker;
+
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationStatus status) {
+        this.status = status;
+    }
+
+    @JsonBackReference
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    @JsonBackReference
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
+    }
 
     @Override
     public boolean equals(Object o) {

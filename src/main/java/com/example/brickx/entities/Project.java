@@ -2,6 +2,8 @@ package com.example.brickx.entities;
 
 import com.example.brickx.entities.commons.BaseEntity;
 import com.example.brickx.entities.enums.ProjectStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -18,8 +20,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@Setter
 @ToString
 public class Project extends BaseEntity {
 
@@ -59,6 +59,82 @@ public class Project extends BaseEntity {
         this.projectStatus = projectStatus;
         this.dateCreated = dateCreated;
         this.contractor = contractor;
+        this.jobs = jobs;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Integer getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Integer budget) {
+        this.budget = budget;
+    }
+
+    public ProjectStatus getProjectStatus() {
+        return projectStatus;
+    }
+
+    public void setProjectStatus(ProjectStatus projectStatus) {
+        this.projectStatus = projectStatus;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    @JsonBackReference
+    public Contractor getContractor() {
+        return contractor;
+    }
+
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
+    }
+
+    @JsonManagedReference
+    public List<Worker> getWorker() {
+        return worker;
+    }
+
+    public void setWorker(List<Worker> worker) {
+        this.worker = worker;
+    }
+
+    @JsonManagedReference
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
     }
 
