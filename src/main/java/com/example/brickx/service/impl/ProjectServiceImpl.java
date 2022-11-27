@@ -3,20 +3,16 @@ package com.example.brickx.service.impl;
 import com.example.brickx.dtos.ProjectDto;
 import com.example.brickx.entities.Job;
 import com.example.brickx.entities.Project;
-import com.example.brickx.entities.enums.JobType;
 import com.example.brickx.entities.enums.ProjectStatus;
 import com.example.brickx.exceptions.ResourceNotFoundException;
 import com.example.brickx.repository.ContractorRepository;
+import com.example.brickx.repository.JobRepository;
 import com.example.brickx.repository.ProjectRepository;
 import com.example.brickx.service.ProjectService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -24,11 +20,14 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
 
     private final ContractorRepository contractorRepository;
+
+    private final JobRepository jobRepository;
     private final ModelMapper modelMapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ContractorRepository contractorRepository, ModelMapper modelMapper) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ContractorRepository contractorRepository, JobRepository jobRepository, ModelMapper modelMapper) {
         this.projectRepository = projectRepository;
         this.contractorRepository = contractorRepository;
+        this.jobRepository = jobRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -46,10 +45,9 @@ public class ProjectServiceImpl implements ProjectService {
             project.setStartDate(projectDto.getStartDate());
             project.setContractor(contractorRepository.findContractorById(contractorId));
             project.setProjectStatus(ProjectStatus.Open);
-            Project savedProject = projectRepository.save(project);
-            List<Job> jobs = projectDto.getJob().stream().map(jobName -> new Job(jobName,new ArrayList<>(),savedProject)).toList();
-            savedProject.setJobs(jobs);
-            projectRepository.save(savedProject);
+            List<Job> jobs = projectDto.getJobs().stream().map(jobName-> jobRepository.findJobByName(jobName)).toList();
+            project.setJobs(jobs);
+            projectRepository.save(project);
         }
     }
 

@@ -1,29 +1,26 @@
 package com.example.brickx.entities;
 
-import com.example.brickx.entities.commons.BaseEntity;
 import com.example.brickx.entities.enums.Gender;
-import com.example.brickx.entities.enums.JobType;
 import com.example.brickx.entities.enums.Role;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@PrimaryKeyJoinColumn(name = "Worker")
 public class Worker extends User {
 
     private String jobName;
@@ -33,13 +30,28 @@ public class Worker extends User {
     private Project project;
 
     @OneToMany(mappedBy = "worker")
+    @ToString.Exclude
     private List<Application> application;
 
     @OneToMany(mappedBy = "worker")
+    @ToString.Exclude
     private List<Review> reviewList;
 
-    public Worker(String firstName, String lastName, String email, String password, Gender gender, Role role, String bio, String phoneNumber, LocalDateTime dateCreated, String jobName) {
-        super(firstName, lastName, email, password, gender, role, bio, phoneNumber, dateCreated);
+    public Worker(String firstName, String lastName, String email, String password, Gender gender, Role role, String bio, String phoneNumber, String jobName) {
+        super(firstName, lastName, email, password, gender, role, bio, phoneNumber);
         this.jobName = jobName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Worker worker = (Worker) o;
+        return getId() != null && Objects.equals(getId(), worker.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

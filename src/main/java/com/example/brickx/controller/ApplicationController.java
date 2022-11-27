@@ -28,8 +28,6 @@ public class ApplicationController {
     }
 
 
-
-
     @RolesAllowed("Worker")
     @GetMapping("/requests")
     public ResponseEntity<List<Application>> allRequestsByWorkerId(@AuthenticationPrincipal UserDetails currentUser){

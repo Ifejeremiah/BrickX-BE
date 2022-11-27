@@ -47,27 +47,27 @@ public class AppInit implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User contractor = new Contractor("John","Doe","johndoe@gmail.com", passwordEncoder.encode("testuser"), Gender.male, Role.Contractor,"a great contractor","08023456798", LocalDateTime.now());
-        User contractor1 = new Contractor("Zainab","Okonkwo","Zainabokonkwo@gmail.com","testuser", Gender.female, Role.Contractor,"Good with land based contracts","090468536429", LocalDateTime.now());
-        User contractor2 = new Contractor("Lorenzo","Bricks","lorenzobricks@gmail.com","testuser", Gender.male, Role.Contractor,"With over 73 complete building contracts under my belt, I can assure you of delivering worthy buildings","07057456263", LocalDateTime.now());
-        User contractor3 = new Contractor("Neha","Weaver","Nehdeweaver@gmail.com","testuser", Gender.female, Role.Contractor,"Great at turning bricks to structures","08034812586", LocalDateTime.now());
-        User contractor4 = new Contractor("Jane","Aiko","janethebeaver@gmail.com","testuser", Gender.female, Role.Contractor,"I will turn your dream house to reality","08073758792", LocalDateTime.now());
-        User contractor5 = new Contractor("William","Ogundegbe","Williamogundegbe@gmail.com","testuser", Gender.male, Role.Contractor,"I am good at churning out amazing buildings","09054392140", LocalDateTime.now());
+        User contractor = new Contractor("John","Doe","johndoe@gmail.com", passwordEncoder.encode("testuser"), Gender.male, Role.Contractor,"a great contractor","08023456798");
+        User contractor1 = new Contractor("Zainab","Okonkwo","Zainabokonkwo@gmail.com",passwordEncoder.encode("testuser"), Gender.female, Role.Contractor,"Good with land based contracts","090468536429");
+        User contractor2 = new Contractor("Lorenzo","Bricks","lorenzobricks@gmail.com",passwordEncoder.encode("testuser"), Gender.male, Role.Contractor,"With over 73 complete building contracts under my belt, I can assure you of delivering worthy buildings","07057456263");
+        User contractor3 = new Contractor("Neha","Weaver","Nehdeweaver@gmail.com",passwordEncoder.encode("testuser"), Gender.female, Role.Contractor,"Great at turning bricks to structures","08034812586");
+        User contractor4 = new Contractor("Jane","Aiko","janethebeaver@gmail.com",passwordEncoder.encode("testuser"), Gender.female, Role.Contractor,"I will turn your dream house to reality","08073758792");
+        User contractor5 = new Contractor("William","Ogundegbe","Williamogundegbe@gmail.com",passwordEncoder.encode("testuser"), Gender.male, Role.Contractor,"I am good at churning out amazing buildings","09054392140");
 
         userRepository.saveAll(List.of(contractor,contractor2,contractor3,contractor4,contractor5,contractor1));
 
 
-        User worker = new Worker("Tosin","martin","tosinmartin@gmail.com","tosin",Gender.male,Role.Worker,"I am good with my hands","0804263325", LocalDateTime.now(),"INSPECTOR");
+        User worker = new Worker("Tosin","martin","tosinmartin@gmail.com",passwordEncoder.encode("testuser"),Gender.male,Role.Worker,"I am good with my hands","0804263325","INSPECTOR");
 
-        User worker1 = new Worker("Klondike","pepple","klondikepepple@gmail.com","tosin",Gender.male,Role.Worker,"Give me bricks and mortar and watch me turn blueprints to glorious landscapes","0924769422", LocalDateTime.now(),"BRICKMASON");
+        User worker1 = new Worker("Klondike","pepple","klondikepepple@gmail.com",passwordEncoder.encode("testuser"),Gender.male,Role.Worker,"Give me bricks and mortar and watch me turn blueprints to glorious landscapes","0924769422","BRICKMASON");
 
-        User worker2 = new Worker("Kayode","Etoha","kayodetoha@gmail.com","tosin",Gender.male,Role.Worker,"my nicked hands are a testament to my many years of experience in turning the strongest irons to backbones for beautiful structures","0902579021", LocalDateTime.now(),"IRONWORKER");
+        User worker2 = new Worker("Kayode","Etoha","kayodetoha@gmail.com",passwordEncoder.encode("testuser"),Gender.male,Role.Worker,"my nicked hands are a testament to my many years of experience in turning the strongest irons to backbones for beautiful structures","0902579021","IRONWORKER");
 
-        User worker3 = new Worker("Ian","wicker","ianwicker@gmail.com","tosin",Gender.male,Role.Worker,"I make crane operating jobs look easy","0903429421", LocalDateTime.now(),"CRANEOPERATOR");
+        User worker3 = new Worker("Ian","wicker","ianwicker@gmail.com",passwordEncoder.encode("testuser"),Gender.male,Role.Worker,"I make crane operating jobs look easy","0903429421","CRANEOPERATOR");
 
-        User worker4 = new Worker("Esther","Eke","Esthereke@gmail.com","tosin",Gender.female,Role.Worker,"I keep people from experiencing accidents incurred from work hazards","0700689913", LocalDateTime.now(),"SAFETYMANAGER");
+        User worker4 = new Worker("Esther","Eke","Esthereke@gmail.com",passwordEncoder.encode("testuser"),Gender.female,Role.Worker,"I keep people from experiencing accidents incurred from work hazards","0700689913","SAFETYMANAGER");
 
-        User worker5 = new Worker("Akomaye","Udeme","akomayeudeme@gmail.com","tosin",Gender.male,Role.Worker,"I am a good worker","0913422045", LocalDateTime.now(),"COSTESTIMATOR");
+        User worker5 = new Worker("Akomaye","Udeme","akomayeudeme@gmail.com",passwordEncoder.encode("testuser"),Gender.male,Role.Worker,"I am a good worker","0913422045", "COSTESTIMATOR");
 
         userRepository.saveAll(List.of(worker,worker1,worker2,worker3,worker4,worker5));
 
@@ -85,9 +85,9 @@ public class AppInit implements CommandLineRunner {
 
         jobRepository.saveAll(List.of(job1,job2,job3,job4,job5,job6,job7,job8,job9,job10));
 
-        Project project = new Project("Zodiac Suits","6 months",LocalDateTime.now(),5000, ProjectStatus.Open, Date.from(Instant.now()), (Contractor) contractor2, List.of(job5,job8,job2));
-        Project project1 = new Project("Wema Domes","6 months",LocalDateTime.now(),5000, ProjectStatus.Open, Date.from(Instant.now()), (Contractor) contractor4,List.of(job7,job1,job2,job3));
-        Project project2 = new Project("Tem Homes","6 months",LocalDateTime.now(),5000, ProjectStatus.Open, Date.from(Instant.now()), (Contractor) contractor5,List.of(job4,job2,job5));
+        Project project = new Project("Zodiac Suits","6 months",new Date(),5000, ProjectStatus.Open, Date.from(Instant.now()), (Contractor) contractor2, List.of(job5,job8,job2));
+        Project project1 = new Project("Wema Domes","6 months",new Date(),5000, ProjectStatus.Open, Date.from(Instant.now()), (Contractor) contractor4,List.of(job7,job1,job2,job3));
+        Project project2 = new Project("Tem Homes","6 months",new Date(),5000, ProjectStatus.Open, Date.from(Instant.now()), (Contractor) contractor5,List.of(job4,job2,job5));
 
         projectRepository.saveAll(List.of(project1,project2,project));
 
