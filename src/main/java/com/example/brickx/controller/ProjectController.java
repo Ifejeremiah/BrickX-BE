@@ -41,8 +41,12 @@ public class ProjectController {
         this.applicationService = applicationService;
     }
 
+    private final String _PREFIX = "/worker";
+
+    private final String ADMIN_PREFIX = "/contractor";
+
     @RolesAllowed("Contractor")
-    @PostMapping("/projects")
+    @PostMapping("contractors/{cid}/projects")
     public ResponseEntity<String> createProject(@RequestBody ProjectDto projectDto, @AuthenticationPrincipal UserDetails currentUser){
         System.out.println(projectDto);
         Contractor contractor = (Contractor) userRepository.findUserByEmail(currentUser.getUsername());
@@ -51,21 +55,27 @@ public class ProjectController {
     }
 
     @RolesAllowed("Contractor")
-    @GetMapping("/projects")
+    @GetMapping("contractors/{cid}/projects")
     public ResponseEntity<List<Project>> getAllProjects(@AuthenticationPrincipal UserDetails currentUser) {
         Contractor contractor = (Contractor) userRepository.findUserByEmail(currentUser.getUsername());
         return ResponseEntity.ok(projectService.projectsByContractorId(contractor.getId()));
     }
 
     @RolesAllowed("Contractor")
-    @PatchMapping("/projects/{pid}")
+    @PatchMapping("contractors/{cid}/projects/{pid}")
     public ResponseEntity<?> updateProject(@RequestBody ProjectDto projectDto,@PathVariable(name = "pid")Long id) {
         projectService.updateProject(id,projectDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RolesAllowed("Contractor")
-    @PostMapping("/projects/{pid}")
+    @GetMapping("contractors/{cid}/projects/{pid}")
+    public ResponseEntity<Project> getProjectById(@PathVariable(name = "pid")Long id) {
+        return ResponseEntity.ok(projectService.viewProject(id));
+    }
+
+    @RolesAllowed("Contractor")
+    @PostMapping("contractors/{cid}/projects/{pid}")
     public ResponseEntity<?> updateProjectStatus(@PathVariable(name = "pid")Long id, @RequestBody ProjectDto projectDto) {
         projectService.updateProjectStatus(id, projectDto.getStatus());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -73,14 +83,14 @@ public class ProjectController {
 
 
     @RolesAllowed("Contractor")
-    @GetMapping("/projects/{pid}/applications")
+    @GetMapping("contractors/{cid}/projects/{pid}/applications")
     public ResponseEntity<List<Application>> getAllApplicationsForProject(@PathVariable(name = "pid") Long idp,@AuthenticationPrincipal UserDetails currentUser) {
         Contractor contractor = (Contractor) userRepository.findUserByEmail(currentUser.getUsername());
         return ResponseEntity.ok(applicationService.allApplicationsForProject(contractor.getId(), idp));
     }
 
     @RolesAllowed("Contractor")
-    @GetMapping("/projects/{pid}/workers")
+    @GetMapping("contractors/{cid}/projects/{pid}/workers")
     public ResponseEntity<List<Worker>> getAllWorkersForProject(@AuthenticationPrincipal UserDetails currentUser) {
         Contractor contractor = (Contractor) userRepository.findUserByEmail(currentUser.getUsername());
         return ResponseEntity.ok(userService.allWorkersForProject(contractor.getId()));

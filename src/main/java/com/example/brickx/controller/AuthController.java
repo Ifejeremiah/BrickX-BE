@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    private final String WORKER_PREFIX = "/worker";
+
+    private final String CONTRACTOR_PREFIX = "/contractor";
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtTokenProvider tokenProvider;
@@ -34,8 +37,9 @@ public class AuthController {
     }
 
 
-    @PostMapping("/login")
-    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
+
+    @PostMapping("/worker/login")
+    public ResponseEntity<JWTAuthResponse> authenticateWorker(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getEmail(), loginDto.getPassword()));
 
@@ -43,19 +47,23 @@ public class AuthController {
         // get token form tokenProvider
         String token = tokenProvider.generateToken(authentication);
 
-        boolean worker = authentication.getAuthorities().toString().equals("Worker");
-
-        boolean Contractor = authentication.getAuthorities().toString().equals("Contractor");
-
-        if (worker) {
-            Worker user = (Worker) userService.findByEmail(loginDto.getEmail());
-            return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
-        } else {
-            Contractor user = (com.example.brickx.entities.Contractor) userService.findByEmail(loginDto.getEmail());
-            return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
-        }
+        Worker user = (Worker) userService.findByEmail(loginDto.getEmail());
+        return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
     }
 
+
+    @PostMapping("contractor/login")
+    public ResponseEntity<JWTAuthResponse> authenticateContractor(@RequestBody LoginDto loginDto) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDto.getEmail(), loginDto.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // get token form tokenProvider
+        String token = tokenProvider.generateToken(authentication);
+
+        Contractor user = (Contractor) userService.findByEmail(loginDto.getEmail());
+        return ResponseEntity.ok(new JWTAuthResponse(token, user.getId()));
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {

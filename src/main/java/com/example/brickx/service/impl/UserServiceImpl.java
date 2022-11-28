@@ -65,9 +65,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(Long id) {
-        return userRepository.findUserById(id);
+    public Contractor getContractor(Long id) {
+        return (Contractor) userRepository.findUserById(id);
     }
+
+    @Override
+    public Worker getWorker(Long id) {
+        return (Worker) userRepository.findUserById(id);
+    }
+
 
     @Override
     public List<Worker> allWorkersForProject(Long projectId) {

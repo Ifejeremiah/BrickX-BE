@@ -35,8 +35,12 @@ public class JobController {
         this.applicationService = applicationService;
     }
 
+    private final String _PREFIX = "/worker";
+
+    private final String ADMIN_PREFIX = "/contractor";
+
     @RolesAllowed("Worker")
-    @GetMapping("/jobs")
+    @GetMapping("/worker/jobs")
     public ResponseEntity<List<Job>> allJobsByJobType(@AuthenticationPrincipal UserDetails currentUser){
         Worker worker = (Worker) userRepository.findUserByEmail(currentUser.getUsername());
         return ResponseEntity.ok(jobService.allJobsByJobName(worker.getJobName()));
@@ -44,27 +48,27 @@ public class JobController {
 
 
     @RolesAllowed("Worker")
-    @PostMapping("/jobs/{jid}")
+    @PostMapping("/worker/jobs/{jid}")
     public ResponseEntity<String> applyForJob(@AuthenticationPrincipal UserDetails currentUser, @PathVariable(name = "jid") Long idj){
         applicationService.createApplication(getCurrentUserId(currentUser), idj);
         return ResponseEntity.ok("applied");
     }
 
     @RolesAllowed("Worker")
-    @GetMapping("/jobs/{jid}/requests")
+    @GetMapping("/workers/{wid}/jobs/{jid}/requests")
     public ResponseEntity<List<Application>> allApplicationsToJob(@PathVariable(name = "jid") Long idj){
         return ResponseEntity.ok(applicationService.allApplicationsToJob(idj));
     }
 
 
 
-    @PostMapping("jobs/{jid}/requests/{rid}/accept")
+    @PostMapping("/contractor/jobs/{jid}/requests/{rid}/accept")
     public ResponseEntity<?> acceptApplicationToJob(@AuthenticationPrincipal UserDetails currentUser, @PathVariable(name = "jid") Long idj, @PathVariable(name = "rid")Long idr){
         applicationService.acceptApplicationToJob(getCurrentUserId(currentUser),idj,idr);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("jobs/{jid}/requests/{rid}/decline")
+    @PostMapping("/contractor/jobs/{jid}/requests/{rid}/decline")
     public ResponseEntity<?> rejectApplicationToJob(@AuthenticationPrincipal UserDetails currentUser, @PathVariable(name = "jid") Long idj, @PathVariable(name = "rid")Long idr){
         applicationService.declineApplicationToJob(getCurrentUserId(currentUser),idj,idr);
         return new ResponseEntity<>(HttpStatus.OK);

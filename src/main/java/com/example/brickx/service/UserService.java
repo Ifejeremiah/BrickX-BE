@@ -3,6 +3,7 @@ package com.example.brickx.service;
 import com.example.brickx.dtos.SignUpDto;
 import com.example.brickx.dtos.UpdateDto;
 import com.example.brickx.dtos.WorkerDto;
+import com.example.brickx.entities.Contractor;
 import com.example.brickx.entities.User;
 import com.example.brickx.entities.Worker;
 
@@ -13,7 +14,9 @@ public interface UserService {
 
     void updateUserProfile(Long id, UpdateDto updateDto);
 
-    User getUser(Long id);
+    Contractor getContractor(Long id);
+
+    Worker getWorker(Long id);
 
     List<Worker> allWorkersForProject(Long projectId);
 

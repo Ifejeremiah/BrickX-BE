@@ -27,17 +27,27 @@ public class ApplicationController {
         this.userRepository = userRepository;
     }
 
+    private final String _PREFIX = "/worker";
+
+    private final String ADMIN_PREFIX = "/contractor";
 
     @RolesAllowed("Worker")
-    @GetMapping("/requests")
+    @GetMapping("workers/{wid}/requests")
     public ResponseEntity<List<Application>> allRequestsByWorkerId(@AuthenticationPrincipal UserDetails currentUser){
         Worker worker = (Worker) userRepository.findUserByEmail(currentUser.getUsername());
         return ResponseEntity.ok(applicationService.allApplicationsByWorker(worker.getId()));
     }
 
-    @RolesAllowed({"Contractor","Worker"})
-    @GetMapping("/requests/{rid}")
-    public ResponseEntity<Application> getApplicationDetails(@PathVariable(name = "rid") Long id){
+
+    @RolesAllowed({"Worker"})
+    @GetMapping("workers/{wid}/requests/{rid}")
+    public ResponseEntity<Application> getApplicationDetailsAsWorker(@PathVariable(name = "rid") Long id){
+        return ResponseEntity.ok(applicationService.viewApplication(id));
+    }
+
+    @RolesAllowed({"Contractor"})
+    @GetMapping("contractors/{cid}/requests/{rid}")
+    public ResponseEntity<Application> getApplicationDetailsAsContractor(@PathVariable(name = "rid") Long id){
         return ResponseEntity.ok(applicationService.viewApplication(id));
     }
 

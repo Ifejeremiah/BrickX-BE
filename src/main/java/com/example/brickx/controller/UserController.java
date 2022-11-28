@@ -2,7 +2,9 @@ package com.example.brickx.controller;
 
 
 import com.example.brickx.dtos.UpdateDto;
+import com.example.brickx.entities.Contractor;
 import com.example.brickx.entities.User;
+import com.example.brickx.entities.Worker;
 import com.example.brickx.service.UserService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -21,16 +23,30 @@ public class UserController {
         this.userService = userService;
     }
 
+    private final String _PREFIX = "/worker";
 
-    @PatchMapping("/my-profile")
-    public ResponseEntity<?> updateProfile(@AuthenticationPrincipal UserDetails currentUser, @RequestBody UpdateDto updateDto){
+    private final String ADMIN_PREFIX = "/contractor";
+
+    @PatchMapping("worker/my-profile")
+    public ResponseEntity<?> updateWorkerProfile(@AuthenticationPrincipal UserDetails currentUser, @RequestBody UpdateDto updateDto){
         userService.updateUserProfile(getCurrentUserId(currentUser),updateDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/my-profile")
-    public ResponseEntity<User> viewProfile(@AuthenticationPrincipal UserDetails currentUser){
-        return new ResponseEntity<>(userService.getUser(getCurrentUserId(currentUser)),HttpStatus.OK);
+    @PatchMapping("contractor/my-profile")
+    public ResponseEntity<?> updateContractorProfile(@AuthenticationPrincipal UserDetails currentUser, @RequestBody UpdateDto updateDto){
+        userService.updateUserProfile(getCurrentUserId(currentUser),updateDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("contractor/my-profile")
+    public ResponseEntity<Contractor> viewContractorProfile(@AuthenticationPrincipal UserDetails currentUser){
+        return new ResponseEntity<>(userService.getContractor(getCurrentUserId(currentUser)),HttpStatus.OK);
+    }
+
+    @GetMapping("worker/my-profile")
+    public ResponseEntity<Worker> viewWorkerProfile(@AuthenticationPrincipal UserDetails currentUser){
+        return new ResponseEntity<>(userService.getWorker(getCurrentUserId(currentUser)),HttpStatus.OK);
     }
 
 
