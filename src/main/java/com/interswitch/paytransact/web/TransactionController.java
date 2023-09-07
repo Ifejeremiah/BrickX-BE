@@ -1,4 +1,4 @@
-package com.interswitch.paytransact.controllers;
+package com.interswitch.paytransact.web;
 
 import com.interswitch.paytransact.dtos.AccountDto;
 import com.interswitch.paytransact.dtos.PaymentDto;

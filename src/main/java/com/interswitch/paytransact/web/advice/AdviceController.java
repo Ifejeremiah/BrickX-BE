@@ -1,4 +1,4 @@
-package com.interswitch.paytransact.config;
+package com.interswitch.paytransact.web.advice;
 
 import com.interswitch.paytransact.entities.commons.ApiError;
 import com.interswitch.paytransact.exceptions.MainExceptions;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class AdviceController {
     @ResponseBody
     @ExceptionHandler({MainExceptions.class, NotFoundException.class})
     final ResponseEntity<ApiError> handleExceptions(Exception ex) {

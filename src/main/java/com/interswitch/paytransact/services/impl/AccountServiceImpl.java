@@ -71,8 +71,8 @@ public class AccountServiceImpl implements AccountService {
         Account newAccount = new Account();
         newAccount.setUser(userService.loadUserByEmail(accountDto.getEmail()).getId());
         newAccount.setBalance(00.0);
-        newAccount.setCardNumber(objGenerator.nextLong(9999999999999L));
-        newAccount.setAccountNumber(objGenerator.nextLong(999999999999L));
+        newAccount.setCardNumber(objGenerator.nextLong());
+        newAccount.setAccountNumber(objGenerator.nextLong());
         newAccount.setDateCreated(new Date());
 
 //        save account with user and account details

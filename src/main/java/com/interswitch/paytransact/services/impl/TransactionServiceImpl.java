@@ -13,7 +13,6 @@ import com.interswitch.paytransact.services.interfaces.AccountService;
 import com.interswitch.paytransact.services.interfaces.HistoryService;
 import com.interswitch.paytransact.services.interfaces.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -30,15 +29,12 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountService accountService;
     private final HistoryService historyService;
 
-    private KafkaTemplate<String, Transaction> kafkaTemplate;
-
     @Autowired
-    public TransactionServiceImpl(AccountDao accountDao, TransactionDao transactionDao, AccountService accountService, HistoryService historyService, KafkaTemplate<String, Transaction> kafkaTemplate) {
+    public TransactionServiceImpl(AccountDao accountDao, TransactionDao transactionDao, AccountService accountService, HistoryService historyService) {
         this.accountDao = accountDao;
         this.transactionDao = transactionDao;
         this.accountService = accountService;
         this.historyService = historyService;
-        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override
@@ -103,9 +99,6 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = getTransactionByTransactionId(transactionId);
         transaction.setStatus(status);
         transaction.setBalance(balance);
-
-        //        SEND PAYMENT NOTIFICATION TO KAFKA
-        kafkaTemplate.send(TOPIC, transaction);
 
         transactionDao.update(transaction);
     }
